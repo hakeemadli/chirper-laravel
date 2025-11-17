@@ -1,3 +1,4 @@
+
 @props(['chirp'])
 
 <div class="card bg-base-100 shadow">
@@ -21,7 +22,6 @@
 
             <div class="min-w-0 flex-1">
                 <div class="flex justify-between w-full">
-
                     <div class="flex items-center gap-1">
                         <span class="text-sm font-semibold">{{ $chirp->user ? $chirp->user->name : 'Anonymous' }}</span>
                         <span class="text-base-content/60">·</span>
@@ -32,20 +32,22 @@
                         @endif
                     </div>
 
-                    <div class="flex gap-1">
-                        <a href="/chirps/{{ $chirp->id }}/edit" class="btn btn-ghost btn-xs">
-                            Edit
-                        </a>
-                        <form method="POST" action="/chirps/{{ $chirp->id }}">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit"
-                                onclick="return confirm('Are you sure you want to delete this chirp?')"
-                                class="btn btn-ghost btn-xs text-error">
-                                Delete
-                            </button>
-                        </form>
-                    </div>
+                    @can('update', $chirp)
+                        <div class="flex gap-1">
+                            <a href="/chirps/{{ $chirp->id }}/edit" class="btn btn-ghost btn-xs">
+                                Edit
+                            </a>
+                            <form method="POST" action="/chirps/{{ $chirp->id }}">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit"
+                                    onclick="return confirm('Are you sure you want to delete this chirp?')"
+                                    class="btn btn-ghost btn-xs text-error">
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
+                    @endcan
                 </div>
                 <p class="mt-1">{{ $chirp->message }}</p>
             </div>
